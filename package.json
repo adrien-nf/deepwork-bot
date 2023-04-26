@@ -1,0 +1,29 @@
+{
+	"name": "deepwork-bot",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "ts-node index.ts",
+		"reload:commands": "ts-node deploy-commands.ts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/adrien-nf/deepwork-bot.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/adrien-nf/deepwork-bot/issues"
+	},
+	"homepage": "https://github.com/adrien-nf/deepwork-bot#readme",
+	"dependencies": {
+		"@types/node": "^18.16.1",
+		"discord.js": "^14.9.0",
+		"dotenv": "^16.0.3",
+		"ts-node": "^10.9.1",
+		"tslib": "^2.5.0",
+		"typescript": "^5.0.4"
+	}
+}
