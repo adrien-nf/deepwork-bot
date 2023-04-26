@@ -1,17 +1,18 @@
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from "fs";
+import path from "path";
 
 export class EventsReader {
-	public static getEvents(): any[] {
-		const eventsPath = path.join(__dirname, '../../events');
+	public static async getEvents(): Promise<any[]> {
+		const eventsPath = path.join(process.env.ROOT_DIR as string, '/events');
 		const eventFiles = fs.readdirSync(eventsPath).filter((file: string) => file.endsWith('.ts'));
 
-		const events: Event[] = [];
+		const events: any[] = [];
 
 		for (const file of eventFiles) {
 			const filePath = path.join(eventsPath, file);
-			const event = require(filePath);
-			events.push(event);
+			await import(filePath).then(event => {
+				events.push(event);
+			})
 		}
 
 		return events;

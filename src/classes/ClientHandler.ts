@@ -19,8 +19,8 @@ export class ClientHandler {
 		this.client.login(process.env.DISCORD_TOKEN)
 	}
 
-	protected registerEvents() {
-		EventsReader.getEvents().forEach(event => {
+	protected async registerEvents() {
+		(await EventsReader.getEvents()).forEach(event => {
 			if (event.once) {
 				this.client.once(event.name, (...args) => event.execute(...args));
 			} else {

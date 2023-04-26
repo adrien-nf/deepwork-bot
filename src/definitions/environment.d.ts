@@ -4,6 +4,7 @@ declare global {
 			DISCORD_TOKEN: string;
 			DISCORD_APP_CLIENT_ID: string;
 			DISCORD_SERVER_GUILD_ID: string;
+			ROOT_DIR: string;
 		}
 	}
 }
