@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, Events, RepliableInteraction } from "discord.js";
 import { CommandsReader } from "./CommandsReader";
 import { EventsReader } from "./EventsReader";
+import { AppEvent } from "../interfaces/AppEvent";
 
 export class ClientHandler {
 	protected client: Client;
@@ -20,7 +21,7 @@ export class ClientHandler {
 	}
 
 	protected async registerEvents() {
-		(await EventsReader.getEvents()).forEach(event => {
+		(await EventsReader.getEvents()).forEach((event: AppEvent) => {
 			if (event.once) {
 				this.client.once(event.name, (...args) => event.execute(...args));
 			} else {
@@ -30,7 +31,6 @@ export class ClientHandler {
 	}
 
 	protected registerCommands() {
-
 		this.client.on(Events.InteractionCreate, async interaction => {
 			if (!interaction.isChatInputCommand()) return;
 
