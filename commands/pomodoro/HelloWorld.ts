@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, Interaction, RepliableInteraction } from "discord.js"
+import { SlashCommandBuilder, RepliableInteraction } from "discord.js"
 
 export const data = new SlashCommandBuilder()
 	.setName('ping')

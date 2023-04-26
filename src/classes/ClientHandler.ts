@@ -4,32 +4,53 @@ import { EventsReader } from "./EventsReader";
 
 export class ClientHandler {
 	protected client: Client;
-
 	protected commands: Map<string, any>;
-	protected events: any[];
 
 	public constructor() {
 		this.client = new Client(
 			{ intents: [GatewayIntentBits.Guilds] }
 		);
 
-		this.events = EventsReader.getEvents();
+		this.commands = CommandsReader.getCommands();
 
-		this.events.forEach(event => {
+		this.registerEvents();
+		this.registerCommands();
+
+		this.client.login(process.env.DISCORD_TOKEN)
+	}
+
+	protected registerEvents() {
+		EventsReader.getEvents().forEach(event => {
 			if (event.once) {
 				this.client.once(event.name, (...args) => event.execute(...args));
 			} else {
 				this.client.on(event.name, (...args) => event.execute(...args));
 			}
 		})
+	}
 
-		this.commands = CommandsReader.getCommands();
+	protected registerCommands() {
 
-		this.client.on(Events.InteractionCreate, interaction => {
+		this.client.on(Events.InteractionCreate, async interaction => {
 			if (!interaction.isChatInputCommand()) return;
-			interaction.reply("Saluuut")
-		});
 
-		this.client.login(process.env.DISCORD_TOKEN)
+			const command = this.commands.get(interaction.commandName);
+
+			if (!command) {
+				console.error(`No command matching ${interaction.commandName} was found.`);
+				return;
+			}
+
+			try {
+				await command.execute(interaction);
+			} catch (error) {
+				console.error(error);
+				if (interaction.replied || interaction.deferred) {
+					await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+				} else {
+					await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+				}
+			}
+		});
 	}
 }
