@@ -11,8 +11,8 @@ export class EventsReader {
 
 		for (const file of eventFiles) {
 			const filePath = path.join(eventsPath, file);
-			await import(filePath).then((event: AppEvent) => {
-				events.push(event);
+			await import(filePath).then((data: { event: AppEvent }) => {
+				events.push(data.event);
 			})
 		}
 
